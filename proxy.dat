@@ -243,31 +243,31 @@ var list = {
     "wide-youtube.l.google.com",
     "windguru.cz",
     "wunderground.com",
-    "www.asus.com",
-    "www.bbc.com",
-    "www.bradyid.com",
-    "www.cisco.com",
-    "www.currenttime.tv",
-    "www.dell.com",
-    "www.deviantart.com",
-    "www.dw.com",
-    "www.grammarly.com",
-    "www.hrw.org",
-    "www.intel.com",
-    "www.kavkazr.com",
-    "www.lenovo.com",
-    "www.lostfilmtv5.site",
-    "www.moscowtimes.ru",
-    "www.patreon.com",
-    "www.postfix.org",
-    "www.qualcomm.com",
-    "www.smashwords.com",
-    "www.stalker2.com",
-    "www.the-village.ru",
-    "www.themoviedb.org",
-    "www.torproject.org",
-    "www.wikiart.org",
-    "www.wunderground.com",
+    "asus.com",
+    "bbc.com",
+    "bradyid.com",
+    "cisco.com",
+    "currenttime.tv",
+    "dell.com",
+    "deviantart.com",
+    "dw.com",
+    "grammarly.com",
+    "hrw.org",
+    "intel.com",
+    "kavkazr.com",
+    "lenovo.com",
+    "lostfilmtv5.site",
+    "moscowtimes.ru",
+    "patreon.com",
+    "postfix.org",
+    "qualcomm.com",
+    "smashwords.com",
+    "stalker2.com",
+    "the-village.ru",
+    "themoviedb.org",
+    "torproject.org",
+    "wikiart.org",
+    "wunderground.com",
     "xhamster.com",
     "xhamsterlive.com",
     "xiaomi.eu",
@@ -300,10 +300,10 @@ function partition(arr, start, end) {
 }
     
 function quickSort(arr, start = 0, end = arr.length - 1) {
-  if (start >= end) return
-  let pivotIndex = partition(arr, start, end)
-  quickSort(arr, start, pivotIndex - 1)
-  quickSort(arr, pivotIndex + 1, end)
+  if (start >= end) return;
+  let pivotIndex = partition(arr, start, end);
+  quickSort(arr, start, pivotIndex - 1);
+  quickSort(arr, pivotIndex + 1, end);
   return arr
 }
 
@@ -318,15 +318,29 @@ Array.prototype.binarySearch = function(v) {
         i < v ? (start = mid) : (end = mid);
         if (start >= end - 1) { break; }
     }
-    return !c;
+    return !c
 };
 
 function FindProxyForURL(url, host) {
     for (let [key, value] of Object.entries(list)) {
-        list[key] = quickSort(value.map(e => e.toLowerCase()));
-        if ( list[key].binarySearch(host.toLowerCase()) ) {
-            return(key);
+        var converted = [];
+        for ( let [num, host] of Object.entries(value) ) {
+            var chunks = host.split('.');
+            if ( !Array.isArray(converted[chunks.length]) ) {
+                ;converted[chunks.length] = []
+            }
+            ;converted[chunks.length].push(host)
         }
+        for ( let [num] of Object.entries(converted) ) {
+            ;converted[num] = quickSort(converted[num].map(e => e.toLowerCase()))
+        }
+        var chunks = host.split('.');        
+        for ( var i = chunks.length; i > 0; i--) {
+            if ( Array.isArray(converted[i]) && converted[i].binarySearch(chunks.join('.').toLowerCase()) ) {
+                ;return(key)
+            }
+            ;chunks.shift()
+        }        
     }
-    return "DIRECT";
+    return "DIRECT"
 }
