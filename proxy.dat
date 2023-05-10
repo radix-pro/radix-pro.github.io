@@ -1,5 +1,6 @@
 var list = {
   "PROXY 192.168.1.1:8888": [
+    "ifconfig.me",
     "openai.com",
     "btc-alpha.com",
     "www.speedtest.net",
